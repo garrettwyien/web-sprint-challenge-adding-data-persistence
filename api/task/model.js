@@ -2,7 +2,9 @@
 const db = require('../../data/dbConfig');
 
 async function get()  {
-    const tasks = await db('tasks');
+    const tasks = await db('tasks as t')
+        .join('projects as p', 't.project_id', 'p.project_id')
+        .select('t.*', 'p.project_name', 'p.project_description');
     const result = [];
     tasks.map(obj=>{
         const item = {
@@ -10,7 +12,8 @@ async function get()  {
             task_description: obj.task_description,
             task_notes: obj.task_notes,
             task_completed: obj.task_completed === 0 ? false : true,
-            project_id: obj.project_id
+            project_name: obj.project_name,
+            project_description: obj.project_description
         }
     result.push(item);
     })

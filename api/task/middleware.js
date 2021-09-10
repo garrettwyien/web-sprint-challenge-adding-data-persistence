@@ -17,10 +17,10 @@ const validateTask = async (req,res,next) =>{
 const checkProjectId = async (req,res,next)=>{
     try {
         const possibleProject = await db('projects')
-            .where('project_id', req.params.project_id)
+            .where('project_id', req.body.project_id)
             .first()
         if (!possibleProject) {
-            next({status:404,message:`project with project_id ${req.params.project_id} not found`})
+            next({status:404,message:`project with project_id ${req.body.project_id} not found`})
         } else {
             next()
         }
